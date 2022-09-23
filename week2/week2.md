@@ -351,17 +351,5 @@ lazyLoad()
 window.onScroll = lazyLoad
 ```
 
-```js
-window.onscroll = function() {
-    const viewHeight = window.innerHeight || document.documentElement.clientTop
-    const scrollHeight = document.body.scrollTop || document.document.documentElemnt.scrollTop
-    const totalViewHeight = viewHeight + scrollHeight
-    // 获取所有图片
-    const imgs = document.querySelectorAll("img")
-    // 图片的遍历
-    imgs.forEach(item => {
-        item.src = item.dataset.src
-    })
-}
-```
+
 
