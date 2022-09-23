@@ -9,16 +9,20 @@
 
 - 增
   - obj.新键 = 值
+
 - 删
   - delete obj.旧键
+
 - 改
   - obj.旧键 = 值
+
 - 查
   - obj.旧键
 
+
 #### day2 写出当对象的键是变量时为啥要用数组语法,不用会怎么样(注:和Object的区别特殊场景.mp4 这个视频)
 
-- 不使用数组语法,,直接将变量key当成属性,直接找,如果是使用数组语法,那么就会进行变量解析,可以获取到对象中正确的属性
+- 因为对象的键是变量的时候使用数组语法,会解析变量,获取到对象正确的值,如果不使用数组语法,是不会进行变量解析,只会当成对象的键直接去对象中寻找,如果找不到,返回undefined
 
 #### day2 数组通过索引增删改查语法
 
@@ -41,7 +45,7 @@ Math.floor(Math.random() * (max - min + 1) - min)
 
 #### day5 获取非行内样式的封装,offset、client、scroll的位置信息写出
 
-```
+```js
 function getStyle(ele, attr) {
     if (window.getComputedStyle) {
         return getComputedStyle(ele)[attr]
@@ -49,13 +53,14 @@ function getStyle(ele, attr) {
         return ele.currentStyle[attr]
     }
 }
+
 ```
 
 - offset
   - 标签对象.offsetParent 
     - 获取最近定位父元素,没有就是body标签
   - 标签对象.offsetLeft/Top
-    - 到最近定位父元素,没有就是body标签的距离
+    - 到最近定位父元素距离,没有就是body标签的距离
   - 标签对象.offsetWidth/Height
     - 元素宽高(width+padding\*2+border\*2)
 - client
@@ -64,13 +69,14 @@ function getStyle(ele, attr) {
 
   - clientWidth/Height
     - 元素宽高(width + padding * 2)
-
+  - clientWidth + clientLeft * 2 = offsetWidth
 - scroll
   - scrollLeft/Top 
     - 元素滚动的距离默认0,最大滚动距离=超出盒模型的内容也就是看不到的内容
+    - 可以读取或设置元素滚动条到元素左边的距离/内容垂直滚动的像素数
   - scrollWidth/Height
     - 元素[总] = 元素高度 + 元素padding +超出盒模型的内容也就是看不到内容的高度scrollTop
-- clientWidth + clientLeft * 2 = offsetWidth
+    - 元素总宽度（含滚动条）
 
 ## week2的面试题
 
@@ -257,27 +263,27 @@ function getStyle(ele, attr) {
 #### 说出字符串常用方法
 
 - 数组、查找、替换、截取、大小、空格
-  - split、find、replace、replaceAll、substr、subString、toUpperCase/toLowerCase、trim
+  - split、includes、replace、substr(索引,长度)、toUpperCase/toLowerCase、trim
 
 - 学习
-  - length
-  - lastIndexOf
-  - repeat
+  - length属性 获取字符串的长度
+  - lastIndexOf 
+  - repeat(数量) 重复
 
 
 ####  JS如何去空格
 
-- trim 只能去两边
+- trim 中间不能去掉
 - replaceAll
   - 'a b c'.replaceAll(' ','')
 - 通过正则
-  - 'a b c'.replace(/\s\g,'')
+  - "a b c".replace(/\s/g, '')
 
 #### 伪数组
 
 - 长得像数组，能用少部分的属性 例如length  但是所有方法都不可以使用，在js中常见的伪数组有
 
-  document.qsa、arguments等等
+  document.querySelectorAll("选择器")、arguments等等
 
 #### 谈谈你对this指向的理解
 
@@ -304,53 +310,40 @@ function getStyle(ele, attr) {
 
 #### 性能优化：网站首屏加载过慢如何解决
 
-```html
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Document</title>
+```js
+/*
+	1.监视滚动条滚动
+	2.计算可见内容高度 = 可视高度 + 滚动高度
+	3.获取所有图片
+	4.图片遍历
+	5.判断图片.scorllTop <= 可见内容高度 改变src的地址
+	6.节流和防抖
+*/
 
-<style>
-    .box {
-        margin: 10px;
-    }
-</style>
-</head>
 
-<body>
-    <div class="box"><img src="./imgs/load.webp" data-src="./imgs/1.jpg"></div>
-    <div class="box"><img src="./imgs/load.webp" data-src="./imgs/2.jpg"></div>
-    <div class="box"><img src="./imgs/load.webp" data-src="./imgs/3.jpg"></div>
-    <div class="box"><img src="./imgs/load.webp" data-src="./imgs/5.jpg"></div>
-    <div class="box"><img src="./imgs/load.webp" data-src="./imgs/6.jpg"></div>
-    <div class="box"><img src="./imgs/load.webp" data-src="./imgs/7.jpg"></div>
-    <div class="box"><img src="./imgs/load.webp" data-src="./imgs/8.gif"></div>
-</body>
-<script>
-    function lazyLoad() {
-        // 1. 监控滚动条滚动
-        // 2. 获取[可见内容]高度 = 默认可见视口 + 滚动高度(注: 因为滚动了可以看到更多图片)
-        // 3. 获取所有图片
-        // 4. 遍历步骤3（或这说：遍历伪数组）
-        // 5. 在步骤4中判断，图片.offsetTop <= 步骤2    成立 - 修改src属性为data - src、失败 - 不管
-        // 6. 节流防抖优化
-        // 获取[可见内容]高度 = 默认可见视口 + 滚动高度(注: 因为滚动了可以看到更多图片)
-        // 默认可见视口 兼容性
-        const defaultView = window.innerHeight || document.documentElement.clientHeight
-        const scrollHeight = document.body.scrollTop || document.documentElement.scrollTop
-        const totalViewHeight = defaultView + scrollHeight
-        const imgs = document.querySelectorAll("img")
-        console.log(totalViewHeight)
-        
-        imgs.forEach(item => {
-            if (item.offsetTop <= totalViewHeight) {
-                item.src = item.dataset.src
-            }
-        });
-    }
-    lazyLoad()
-    window.onscroll = lazyLoad
-</script>
 
-</html>
+function lazyLoad(){
+     // 可视高度
+    const viewHeight = window.innerHeight || document.documentElement.clientHeight
+    // 滚动高度
+    const scrollHeight = document.body.scrollTop || document.documentElement.ScrollTop
+    
+    // 获取可见内容高度
+    const viewContentHeight = viewHeight + scrollHeight
+    
+    //获取所有图片
+    const imgs = document.querySelectorAll("img")
+    
+    //图片遍历
+    imgs.forEach(item => {
+        if(item.scrollTop <= viewContentHeight){
+            item.src = item.dataset.src
+        }
+    })
+}
+// 缺点:需要滚动一下,才会更新图片,所以需要先执行一次
+lazyLoad()
+// 注意事项不要使用lazyLoad()这个代码执行lazyLoad函数
+window.onScroll = lazyLoad
 ```
 

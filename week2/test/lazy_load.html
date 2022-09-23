@@ -20,26 +20,24 @@
 </body>
 <script>
     function lazyLoad() {
-        // 1. 监控滚动条滚动
-        // 2. 获取[可见内容]高度 = 默认可见视口 + 滚动高度(注: 因为滚动了可以看到更多图片)
-        // 3. 获取所有图片
-        // 4. 遍历步骤3（或这说：遍历伪数组）
-        // 5. 在步骤4中判断，图片.offsetTop <= 步骤2    成立 - 修改src属性为data - src、失败 - 不管
-        // 6. 节流防抖优化
-        // 获取[可见内容]高度 = 默认可见视口 + 滚动高度(注: 因为滚动了可以看到更多图片)
-        // 默认可见视口 兼容性
-        const defaultView = window.innerHeight || document.documentElement.clientHeight
-        const scrollHeight = document.body.scrollTop || document.documentElement.scrollTop
-        const totalViewHeight = defaultView + scrollHeight
+        // 可视高度
+        const viewHeight = window.innerHeight || document.documentElement.clientHeight
+        // 滚动高度
+        const scrollHeight = document.body.scrollTop || document.documentElement.ScrollTop
+
+        // 获取可见内容高度
+        const viewContentHeight = viewHeight + scrollHeight
+
+        //获取所有图片
         const imgs = document.querySelectorAll("img")
-        console.log(totalViewHeight)
-        
+        //图片遍历
         imgs.forEach(item => {
-            if (item.offsetTop <= totalViewHeight) {
+            if (item.scrollTop <= viewContentHeight) {
                 item.src = item.dataset.src
             }
-        });
+        })
     }
+    // 缺点:需要滚动一下,才会更新图片,所以需要先执行一次
     lazyLoad()
     window.onscroll = lazyLoad
 </script>
