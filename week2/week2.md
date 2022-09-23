@@ -3,7 +3,7 @@
 #### day1 变量赋值什么时候传值、什么时候传地址
 
 - 变量赋值的时候是原始数据类型的时候传的是值
-- 变量赋值是引用类型的时候传的是地址
+- 变量赋值是对象类型的时候传的是地址
 
 #### day1 对象通过索引增删改查
 
@@ -198,7 +198,7 @@ function getStyle(ele, attr) {
 
   ```js
   var arr = [1,2,3,2,3]
-  console.log([...new set(arr)])
+  console.log([...new Set(arr)])
   ```
 
   
@@ -207,8 +207,8 @@ function getStyle(ele, attr) {
 
   ```js
   var arr = [1,2,3,2,3]
-  var newArr = arr.filter((item,index)=>{
-      return index === arr.indexOf(item)
+  arr.filter((item,index) =>{
+      return index === arr.indexOf
   })
   ```
 
@@ -217,13 +217,15 @@ function getStyle(ele, attr) {
 - 定义空数组，通过forEach遍历重复的数组，通过indexOf判断当前值是否在数组中，不在就push
 
   ```js
-  var arr = [1,2,3,2,3]
-  var newArr = []
-  arr.forEach(item=>{
-      if(newArr.indexOf(item) === -1){
-          newArr.push(item)
+  var arr = [1, 2, 3, 2, 3]
+  var arrNew = []
+  arr.forEach(item => {
+      if (arrNew.indexOf(item) === -1) {
+          arrNew.push(item)
       }
   })
+  
+  console.log(arrNew)
   ```
 
   
@@ -231,13 +233,15 @@ function getStyle(ele, attr) {
 - 定义空数组，通过forEach遍历重复的数组，通过includes判断当前值是否在数组中，不在就push
 
   ```js
-  var arr = [1,2,3,2,3]
-  var newArr = []
-  arr.forEach(item=>{
-      if(!newArr.includes(item)){
-          newArr.push(item)
+  var arr = [1, 2, 3, 2, 3]
+  var arrNew = []
+  arr.forEach(item => {
+      if (!arrNew.includes(item)) {
+          arrNew.push(item)
       }
   })
+  
+  console.log(arrNew)
   ```
 
   
@@ -245,16 +249,16 @@ function getStyle(ele, attr) {
 - 利用对象的属性去重
 
   ```js
-  var arr = [1,2,3,2,3]
-  var newArr = []
+  var arr = [1, 2, 3, 2, 3]
   var obj = {}
-  
-  arr.forEach(item=>{
-      if(!obj[item]){
+  var arrNew = []
+  arr.forEach(item => {
+      if (!obj[item]) {
           obj[item] = item
-          newArr.push(item)
+          arrNew.push(item)
       }
   })
+  console.log(arrNew)
   ```
 
   
@@ -263,7 +267,7 @@ function getStyle(ele, attr) {
 #### 说出字符串常用方法
 
 - 数组、查找、替换、截取、大小、空格
-  - split、includes、replace、substr(索引,长度)、toUpperCase/toLowerCase、trim
+  - split、find、replace、substr(索引,长度)、toUpperCase/toLowerCase、trim
 
 - 学习
   - length属性 获取字符串的长度
@@ -326,7 +330,7 @@ function lazyLoad(){
      // 可视高度
     const viewHeight = window.innerHeight || document.documentElement.clientHeight
     // 滚动高度
-    const scrollHeight = document.body.scrollTop || document.documentElement.ScrollTop
+    const scrollHeight = document.body.scrollTop || document.documentElement.scrollTop
     
     // 获取可见内容高度
     const viewContentHeight = viewHeight + scrollHeight
@@ -345,5 +349,19 @@ function lazyLoad(){
 lazyLoad()
 // 注意事项不要使用lazyLoad()这个代码执行lazyLoad函数
 window.onScroll = lazyLoad
+```
+
+```js
+window.onscroll = function() {
+    const viewHeight = window.innerHeight || document.documentElement.clientTop
+    const scrollHeight = document.body.scrollTop || document.document.documentElemnt.scrollTop
+    const totalViewHeight = viewHeight + scrollHeight
+    // 获取所有图片
+    const imgs = document.querySelectorAll("img")
+    // 图片的遍历
+    imgs.forEach(item => {
+        item.src = item.dataset.src
+    })
+}
 ```
 
