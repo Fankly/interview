@@ -92,9 +92,9 @@
 
 #### 说出数据转换为字符串型的结果
 
-- +字符串
-- String()
-- toString()
+- 内容+字符串
+- String(内容)
+- 内容.toString()
 
 #### 说出数据转换为数值型的结果
 
@@ -141,9 +141,21 @@ true === 1 //false
 
 #### 实战购物车小数计算精度丢失如何解决？
 
-- 将两边同时乘以小数点位数的10的n次方,进行运算,运算完成后,除以之前的10的n次方
+- 将两边同时乘以10的小数点位数的次方,进行运算,运算完成后,除以之前的10的小数点位数的次方
 - es6的方法
-  - es6提供了一个Number.EPSILON,这个值等于2^-52,无限等于,我们判断这个误差值是否在这个范围内,就可以说明是相等的
+  - es6提供了一个Number.EPSILON,这个值等于2^-52,无限等于0,我们判断这个误差值是否在这个范围内,就可以说明是相等的
+  
+    ```js
+    function numbersequal(a,b){
+     return Math.abs(a-b)<Number.EPSILON
+    }
+    var a = 0.1 + 0.2;
+    var b = 0.3;
+    console.log(numbersequal(a, b))
+    // true
+    ```
+  
+    
 - 四舍五入法
   
   ````js
@@ -178,7 +190,7 @@ true === 1 //false
 #### day02 什么是运算符、什么是表达式
 
 - 运算符
-  - 参与运算符的符号
+  - 代码里面进行运算的时候使用的符号
 - 表达式
   - n个符号,n个数字有意义的组合
 
@@ -216,30 +228,6 @@ true === 1 //false
 2、搞一个空函数
 3、将1放到2里面
 4、微调（例如形参等)
-//随机数
-function randomNum(max, min) {
-    if (max < min) {
-        let temp = max
-        max = min
-        min = temp
-    }
-    return Math.floor(Math.random() * (max - min + 1) - min)
-}
-
-//获取非行内样式
-/**
- * 
- * @param {标签对象} tagObj 
- * @param {css属性值} cssAttr 
- * @returns 
- */
-function getStyle(tagObj, cssAttr) {
-    if (window.getComputedStyle) {
-        return getComputedStyle(tagObj)[cssAttr]
-    } else {
-        return tagObj.currentStyle[cssAttr]
-    }
-}
 ```
 
 

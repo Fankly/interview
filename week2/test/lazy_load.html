@@ -1,0 +1,47 @@
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+
+<style>
+    .box {
+        margin: 10px;
+    }
+</style>
+</head>
+
+<body>
+    <div class="box"><img src="./imgs/load.webp" data-src="./imgs/1.jpg"></div>
+    <div class="box"><img src="./imgs/load.webp" data-src="./imgs/2.jpg"></div>
+    <div class="box"><img src="./imgs/load.webp" data-src="./imgs/3.jpg"></div>
+    <div class="box"><img src="./imgs/load.webp" data-src="./imgs/5.jpg"></div>
+    <div class="box"><img src="./imgs/load.webp" data-src="./imgs/6.jpg"></div>
+    <div class="box"><img src="./imgs/load.webp" data-src="./imgs/7.jpg"></div>
+    <div class="box"><img src="./imgs/load.webp" data-src="./imgs/8.gif"></div>
+</body>
+<script>
+    function lazyLoad() {
+        // 1. 监控滚动条滚动
+        // 2. 获取[可见内容]高度 = 默认可见视口 + 滚动高度(注: 因为滚动了可以看到更多图片)
+        // 3. 获取所有图片
+        // 4. 遍历步骤3（或这说：遍历伪数组）
+        // 5. 在步骤4中判断，图片.offsetTop <= 步骤2    成立 - 修改src属性为data - src、失败 - 不管
+        // 6. 节流防抖优化
+        // 获取[可见内容]高度 = 默认可见视口 + 滚动高度(注: 因为滚动了可以看到更多图片)
+        // 默认可见视口 兼容性
+        const defaultView = window.innerHeight || document.documentElement.clientHeight
+        const scrollHeight = document.body.scrollTop || document.documentElement.scrollTop
+        const totalViewHeight = defaultView + scrollHeight
+        const imgs = document.querySelectorAll("img")
+        console.log(totalViewHeight)
+        
+        imgs.forEach(item => {
+            if (item.offsetTop <= totalViewHeight) {
+                item.src = item.dataset.src
+            }
+        });
+    }
+    lazyLoad()
+    window.onscroll = lazyLoad
+</script>
+
+</html>

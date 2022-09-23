@@ -15,18 +15,17 @@
   - obj.旧键 = 值
 - 查
   - obj.旧键
-- 当键时变量的时候使用obj[变量名] 
 
 #### day2 写出当对象的键是变量时为啥要用数组语法,不用会怎么样(注:和Object的区别特殊场景.mp4 这个视频)
 
-- 
+- 不使用数组语法,,直接将变量key当成属性,直接找,如果是使用数组语法,那么就会进行变量解析,可以获取到对象中正确的属性
 
 #### day2 数组通过索引增删改查语法
 
 - 增
   - arr[新索引] = 值
 - 删
-  - arr.slice(索引,个数)
+  - arr.splice(索引,个数)
 - 改
   - arr[旧索引] = 值
 - 查
@@ -41,6 +40,37 @@ Math.floor(Math.random() * (max - min + 1) - min)
 
 
 #### day5 获取非行内样式的封装,offset、client、scroll的位置信息写出
+
+```
+function getStyle(ele, attr) {
+    if (window.getComputedStyle) {
+        return getComputedStyle(ele)[attr]
+    } else {
+        return ele.currentStyle[attr]
+    }
+}
+```
+
+- offset
+  - 标签对象.offsetParent 
+    - 获取最近定位父元素,没有就是body标签
+  - 标签对象.offsetLeft/Top
+    - 到最近定位父元素,没有就是body标签的距离
+  - 标签对象.offsetWidth/Height
+    - 元素宽高(width+padding\*2+border\*2)
+- client
+  - clientLeft/Top
+    - 元素边框
+
+  - clientWidth/Height
+    - 元素宽高(width + padding * 2)
+
+- scroll
+  - scrollLeft/Top 
+    - 元素滚动的距离默认0,最大滚动距离=超出盒模型的内容也就是看不到的内容
+  - scrollWidth/Height
+    - 元素[总] = 元素高度 + 元素padding +超出盒模型的内容也就是看不到内容的高度scrollTop
+- clientWidth + clientLeft * 2 = offsetWidth
 
 ## week2的面试题
 
@@ -64,15 +94,62 @@ Math.floor(Math.random() * (max - min + 1) - min)
 #### 如何交换两个变量的值
 
 - 临时变量法
+
+  ```js
+  var a = 1
+  var b = 2
+  var temp = a
+  a = b
+  b = temp
+  ```
+
 - 加减法
+
+  ```js
+  var a = 1
+  var b = 2
+  a = a + b
+  b = a - b
+  a = a - b
+  ```
+
 - 解构赋值法
+
+  ```js
+  var a = 1
+  var b = 2
+  [a,b] = [b,a]
+  ```
+
 - 数组法
+
+  ```js
+  var a = 1
+  var b = 2
+  a = [a,b]
+  b = a[0]
+  a = a[1]
+  ```
+
 - 对象法
+
+  ```js
+  var a = 1
+  var b = 2
+  a = {
+      a:b,
+      b:a
+  }
+  b = a.b
+  a = a.a
+  ```
+
+  
 
 #### 说出数组有哪些方法
 
 - 数据操作
-  - shift 删除**第一个**元素
+  - shift 删除第一个元素
   - unshift 将元素添加到开头
   - pop
   - push
@@ -95,22 +172,98 @@ Math.floor(Math.random() * (max - min + 1) - min)
 
 #### 说出数组哪些方法会改变原数据
 
-- 数据操作 shift unshift pop push
-- 学习常用 reverse splice
-- 了解 sort
+- 数据操作 
+  - shift 
+  - unshift 
+  - pop 
+  - push
+
+- 学习常用 
+  - reverse 
+  - splice
+
+- 了解
+  - sort
+
 
 #### 如何实现数组去重  
 
 - 通过es6新增的Set数据结构、和解构赋值去重     [...new Set(重复数组)]    week3
+
+  ```js
+  var arr = [1,2,3,2,3]
+  console.log([...new set(arr)])
+  ```
+
+  
+
 - 通过filter配合indexOf实现数组去重
+
+  ```js
+  var arr = [1,2,3,2,3]
+  var newArr = arr.filter((item,index)=>{
+      return index === arr.indexOf(item)
+  })
+  ```
+
+  
+
 - 定义空数组，通过forEach遍历重复的数组，通过indexOf判断当前值是否在数组中，不在就push
+
+  ```js
+  var arr = [1,2,3,2,3]
+  var newArr = []
+  arr.forEach(item=>{
+      if(newArr.indexOf(item) === -1){
+          newArr.push(item)
+      }
+  })
+  ```
+
+  
+
 - 定义空数组，通过forEach遍历重复的数组，通过includes判断当前值是否在数组中，不在就push
+
+  ```js
+  var arr = [1,2,3,2,3]
+  var newArr = []
+  arr.forEach(item=>{
+      if(!newArr.includes(item)){
+          newArr.push(item)
+      }
+  })
+  ```
+
+  
+
 - 利用对象的属性去重
+
+  ```js
+  var arr = [1,2,3,2,3]
+  var newArr = []
+  var obj = {}
+  
+  arr.forEach(item=>{
+      if(!obj[item]){
+          obj[item] = item
+          newArr.push(item)
+      }
+  })
+  ```
+
+  
+
 
 #### 说出字符串常用方法
 
 - 数组、查找、替换、截取、大小、空格
-- split、find、replace、replaceAll、substr、subString、toUpperCase/toLowerCase、trim
+  - split、find、replace、replaceAll、substr、subString、toUpperCase/toLowerCase、trim
+
+- 学习
+  - length
+  - lastIndexOf
+  - repeat
+
 
 ####  JS如何去空格
 
@@ -135,9 +288,69 @@ Math.floor(Math.random() * (max - min + 1) - min)
 - 箭头函数 父function中this,父没有function就是window
 - 自定义 call apply bind
 - 构造函数 this === 实例化对象 === 公共空间/原型对象上的方法中的this
-- 其他：事件、构造函数、公共空间/原型对象上方法-优先使用普通函数写法，当需要明确改变this指向的时候再换箭头函数，
-  其他全不优先使用箭头函数。
+- 其他：事件、构造函数、公共空间/原型对象上方法-优先使用普通函数写法，当需要明确改变this指向的时候再换箭头函数，其他全部优先使用箭头函数。
 
 #### 图片懒加载原理
 
+- 好处
+  - 减少HTTP请求
+- 原理
+  1. 监控滚动条滚动
+  2. 获取[可见内容]高度 = 默认可见视口 + 滚动高度(注:因为滚动了可以看到更多图片)
+  3. 获取所有图片
+  4. 遍历步骤3（或这说：遍历伪数组）
+  5. 在步骤4中判断，图片.offsetTop <= 步骤2    成立-修改src属性为data-src、失败-不管
+  6. 节流防抖优化
+
 #### 性能优化：网站首屏加载过慢如何解决
+
+```html
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+
+<style>
+    .box {
+        margin: 10px;
+    }
+</style>
+</head>
+
+<body>
+    <div class="box"><img src="./imgs/load.webp" data-src="./imgs/1.jpg"></div>
+    <div class="box"><img src="./imgs/load.webp" data-src="./imgs/2.jpg"></div>
+    <div class="box"><img src="./imgs/load.webp" data-src="./imgs/3.jpg"></div>
+    <div class="box"><img src="./imgs/load.webp" data-src="./imgs/5.jpg"></div>
+    <div class="box"><img src="./imgs/load.webp" data-src="./imgs/6.jpg"></div>
+    <div class="box"><img src="./imgs/load.webp" data-src="./imgs/7.jpg"></div>
+    <div class="box"><img src="./imgs/load.webp" data-src="./imgs/8.gif"></div>
+</body>
+<script>
+    function lazyLoad() {
+        // 1. 监控滚动条滚动
+        // 2. 获取[可见内容]高度 = 默认可见视口 + 滚动高度(注: 因为滚动了可以看到更多图片)
+        // 3. 获取所有图片
+        // 4. 遍历步骤3（或这说：遍历伪数组）
+        // 5. 在步骤4中判断，图片.offsetTop <= 步骤2    成立 - 修改src属性为data - src、失败 - 不管
+        // 6. 节流防抖优化
+        // 获取[可见内容]高度 = 默认可见视口 + 滚动高度(注: 因为滚动了可以看到更多图片)
+        // 默认可见视口 兼容性
+        const defaultView = window.innerHeight || document.documentElement.clientHeight
+        const scrollHeight = document.body.scrollTop || document.documentElement.scrollTop
+        const totalViewHeight = defaultView + scrollHeight
+        const imgs = document.querySelectorAll("img")
+        console.log(totalViewHeight)
+        
+        imgs.forEach(item => {
+            if (item.offsetTop <= totalViewHeight) {
+                item.src = item.dataset.src
+            }
+        });
+    }
+    lazyLoad()
+    window.onscroll = lazyLoad
+</script>
+
+</html>
+```
+
