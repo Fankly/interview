@@ -10,7 +10,24 @@
 
 <body>
     <script>
-        
+        function foo(name, age, height) {
+            console.log(this, name, age, height)
+        }
+
+        Function.prototype._bind = function (thisArg, ...otherArgs) {
+            thisArg = (thisArg === null || thisArg === undefined) ? window : Object(thisArg)
+            thisArg.fn = this
+            return (...newArgs) => {
+                var allArgs = [...otherArgs,newArgs]
+                thisArg.fn(...allArgs)
+                delete thisArg.fn
+            }
+        }
+
+        var newFoo = foo._bind({ name: "why" }, "kobe", 30,1.98)
+        newFoo("kobe", 30,1.98)
+
+
     </script>
 </body>
 

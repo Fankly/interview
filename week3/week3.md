@@ -13,7 +13,7 @@
   - 目标阶段
     - 真正的目标节点正在处理事件的阶段
   - 冒泡阶段
-    - 事件从目标阶段自下而上向document阶段传播的阶段
+    - 事件从目标阶段自下而上向document节点传播的阶段
 
 #### 谈谈你对事件委托的理解
 
@@ -40,30 +40,61 @@
 #### es6新增语法
 
 - 修饰符
+
   - let、const
+
 - 解构赋值 一次性创建多个变量
+
   - 数组解构
+    - let [变量名=默认值, 变量名=默认值, 变量名=默认值]= [变量,...变量]
   - 对象解构
     - let{键:变量名=默认值,...,键:变量名=默认值} = {键:值,...,键:值}
+
 - 字符串新增语法
+
   - 模板字符串
   - indexOf
   - includes
+
 - 函数新增语法
+
   - 箭头函数
   - 默认值
     - 形参=默认值
     - rest参数(剩余参数)
+
 - 对象新增语法
+
   - 简写
+
     - 函数名(){}
+
   - 链判断操作符 ?
+
+    ```js
+    (a?.b).c
+    // 等价于
+    (a == null ? undefined : a.b).c
+    ```
+
+    
+
   - 空判断操作符 ??
-    -  let temp = null ?? 666
+
+    ```js
+    //读取对象属性的时候，如果某个属性的值是null或undefined，有时候需要为它们指定默认值
+    const animationDuration = response.settings.animationDuration ?? 300;
+    ```
+
+    
+
 - 新增数据类型
+
   - bigInt
   - symbol
+
 - 其他
+
   - 展开运算符 
     - 主要用来合并数据
   - 数据结构
@@ -113,7 +144,7 @@
 - 面试题3 暂时性死区
   - let前面的区域就是暂时性死区,必须先定义再使用
 - 面试题4 let和const选择
-  - 一般使用let、明确后期不该用const 例如Date,promise对象等
+  - 一般使用let、明确后期不改用const 例如Date,promise对象等
 - 面试题5 var和let区别
   - var 函数作用域 可以重复定义 可以修改
   - let 块级作用域 不能重复定义 可以修改
@@ -153,6 +184,14 @@ Function.prototype.apply = function(thisArg,otherArgs){
 bind
 
 ```js
-
+ Function.prototype._bind = function (thisArg, ...otherArgs) {
+            thisArg = (thisArg === null || thisArg === undefined) ? window : Object(thisArg)
+            thisArg.fn = this
+            return (...newArgs) => {
+                var allArgs = [...otherArgs,newArgs]
+                thisArg.fn(...allArgs)
+                delete thisArg.fn
+            }
+        }
 ```
 
