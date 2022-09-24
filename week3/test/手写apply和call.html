@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* function execFn(thisArg, otherArgs, fn) {
+            thisArg = (thisArg === null || thisArg === undefined) ? window : Object(thisArg)
+            thisArg.fn = fn
+            thisArg.fn(...otherArgs)
+            delete thisArg.fn
+        } */
+
+        Function.prototype._execFn = function (thisArg, otherArgs) {
+            thisArg = (thisArg === null || thisArg === undefined) ? window : Object(thisArg)
+            thisArg.fn = this
+            thisArg.fn(...otherArgs)
+            delete thisArg.fn
+        }
+        Function.prototype._call = function (thisArg, ...otherArgs) {
+            this._execFn(thisArg, otherArgs)
+        }
+
+        Function.prototype._apply = function (thisArg, otherArgs) {
+            this._execFn(thisArg, otherArgs)
+        }
+
+        const obj = {
+            name: "why"
+        };
+
+        function fn(a, b) {
+            console.log(this, "形参", a, b);
+        }
+
+        fn._call(obj, 10, 20);
+        fn._apply(obj, [10, 20]);
+    </script>
+</body>
+
+</html>

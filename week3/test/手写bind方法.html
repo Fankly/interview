@@ -10,19 +10,7 @@
 
 <body>
     <script>
-        function foo(name, age) {
-            console.log(this, name, age)
-        }
-        Function.prototype._apply = function (thisArg) {
-            Object.defineProperty(thisArg, "fn", {
-                configurable: true,
-                value: this
-            })
-            thisArg.fn()
-            delete thisArg.fn
-        }
-
-        foo._apply({ name: "why" })
+        
     </script>
 </body>
 

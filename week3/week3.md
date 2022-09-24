@@ -128,6 +128,31 @@
   - bind则是返回改变了上下文后的函数,不执行该函数
 - 返回值区别
   - call/apply 返回 fun的执行结果
-  - bind返回fun的拷贝,并指定了fun的this指向,保存了fun的参数
+  - bind返回fun的拷贝,并指定了fun的this指向,保存了fun的参数 
 
 #### 手写bind/call/apply 原理
+
+apply和call
+
+```js
+ Function.prototype._execFn = function (thisArg, otherArgs) {
+            thisArg = (thisArg === null || thisArg === undefined) ? window : Object(thisArg)
+            thisArg.fn = this
+            thisArg.fn(...otherArgs)
+            delete thisArg.fn
+        }
+Function.prototype.call = function(thisArg,...otherArgs) {
+    execFn(thisArg,otheArgs,this)
+}
+
+Function.prototype.apply = function(thisArg,otherArgs){
+    execFn(thisArg,otherArgs)
+}
+```
+
+bind
+
+```js
+
+```
+
