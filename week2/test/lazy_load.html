@@ -33,7 +33,8 @@
         //图片遍历
         imgs.forEach(item => {
             if (item.scrollTop <= viewContentHeight) {
-                item.src = item.dataset.src
+                // item.src = item.dataset.src
+                item.src = item.getAttribute("data-src")
             }
         })
     }

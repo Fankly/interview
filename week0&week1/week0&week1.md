@@ -57,10 +57,12 @@
     - Math
     - RegExp
     - Error
+    - ...
   - 非标准特殊对象
     - Number
     - String
     - Boolean
+    - ...
 
 #### JS引用类型object、array还有哪些
 
@@ -74,10 +76,12 @@
   - Math
   - RegExp
   - Error
+  - ...
 - 非标准特殊对象
   - Nubmer
   - String 
   - Boolean
+  - ...
 
 #### 如何把数据强制转换为数值类型
 
@@ -155,7 +159,6 @@ true === 1 //false
     // true
     ```
   
-    
 - 四舍五入法
   
   ````js
@@ -202,7 +205,7 @@ true === 1 //false
   3. 三元运算符
 - 判断的选择
   - 什么时候用if
-    - 常用于范围判断(固定值也行 而且可以控制 值相等和全等)
+    - 常用于范围判断(固定值也行 而且也可以控制 值相等和全等)
   - 什么时候使用switch(常用于固定值判断 超过3个)
     - 固定值判断 全等
     - break不写 case穿透 
