@@ -36,6 +36,15 @@ function _new(constructorFn){
 
 ### 箭头函数与普通函数区别？能不能作为构造函数
 
+- 语法更加简洁、清晰
+- 箭头函数不会创建自己的this
+- 箭头函数继承而来的this指向永远不变
+- call/apply()/bind()无法改变箭头函数中的this的指向
+- 箭头函数不能作为构造函数使用
+- 箭头函数没有自己的arguments
+- 箭头函数没有原型prototype
+- 箭头函数不能用作Generator函数,不能使用yeild关键字
+
 ### 更精确判断数据类型
 
 - typeof
