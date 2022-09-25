@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* 抽取 */
+        Function.prototype.execFn = function (thisArg,otherArgs) {
+               // 判断是否是null和undefined
+            thisArg = (thisArg === null || thisArg === undefined) ? window : Object(thisArg)
+            thisArg.fn = this
+            let result = thisArg.fn(...otherArgs)
+            delete thisArg.fn
+            return result
+        }
+
+        Function.prototype._call = function (thisArg, ...otherArgs) {
+            return this.execFn(thisArg,otherArgs)
+        }
+
+        Function.prototype._apply = function (thisArg, otherArg) {
+            return this.execFn(thisArg,otherArg)
+        }
+
+        Function.prototype._bind = function(thisArg,...otherArgs){
+            return (newArgs)=>{
+                // 拼接参数
+                const totalArgs = [...otherArgs,newArgs]
+                thisArg.fn = this
+                thisArg.fn(...totalArgs)
+                delete thisArg.fn
+            }
+        }
+
+        const obj = {
+            name: "why"
+        }
+
+        function fn(name, age) {
+            console.log(this)
+            console.log(name,age)
+            
+        }
+
+        /* const result1 = fn._call(obj, "张三", 18)
+        console.log(result1)
+
+        const result2 = fn._apply(obj, ["张三", 18])
+        console.log(result2) */
+
+        const result3 = fn._bind(obj, "张三")
+        result3(18)
+        
+
+       /*  const result4 = fn.bind(obj, "张三", 18)
+        console.log(result4) */
+        
+    </script>
+</body>
+
+</html>

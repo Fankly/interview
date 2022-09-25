@@ -20,15 +20,16 @@
         Function.prototype._execFn = function (thisArg, otherArgs) {
             thisArg = (thisArg === null || thisArg === undefined) ? window : Object(thisArg)
             thisArg.fn = this
-            thisArg.fn(...otherArgs)
+            const result = thisArg.fn(...otherArgs)
             delete thisArg.fn
+            return result
         }
         Function.prototype._call = function (thisArg, ...otherArgs) {
-            this._execFn(thisArg, otherArgs)
+            return this._execFn(thisArg, otherArgs)
         }
 
         Function.prototype._apply = function (thisArg, otherArgs) {
-            this._execFn(thisArg, otherArgs)
+            return this._execFn(thisArg, otherArgs)
         }
 
         const obj = {
@@ -36,11 +37,20 @@
         };
 
         function fn(a, b) {
-            console.log(this, "形参", a, b);
+           
+            console.log(this)
+            
+            console.log(a,b)
         }
 
-        fn._call(obj, 10, 20);
-        fn._apply(obj, [10, 20]);
+        /* const result1 = fn.call(1,10,20)
+        console.log(result1) */
+        
+
+        const result = fn._call(1, 10, 20);
+    
+
+       
     </script>
 </body>
 
