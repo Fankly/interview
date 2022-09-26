@@ -97,6 +97,14 @@ function getStyle(ele, attr) {
 - instanceof
 - 原型链(constructor)
 
+>Array.isArray([1, 2 ,3])     	 // true
+>[1, 2 ,3] instanceof Array 	   // true
+>[1, 2 ,3].constructor === Array // true
+>
+>Array.isArray('aa')     	 // false
+>'aa' instanceof Array 	   // false
+>'aa'.constructor === Array // false
+
 #### 如何交换两个变量的值
 
 - 临时变量法

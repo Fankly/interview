@@ -1,0 +1,71 @@
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    ul {
+        list-style: none;
+    }
+
+    li.gjp {
+        width: 300px;
+        height: 20px;
+        background-color: #ccc;
+        margin: 5px 0;
+    }
+
+    li.gjp:nth-of-type(1) {
+        width: 250px;
+    }
+
+    li.gjp:nth-of-type(2) {
+        width: 360px;
+    }
+
+    li.gjp:nth-of-type(3) {
+        width: 180px;
+    }
+
+    #box {
+        margin: 40px;
+    }
+</style>
+
+<div id="box">
+    <input type="text">
+    <ul>
+    </ul>
+</div>
+
+<script>
+    const inputEl = document.querySelector("input")
+    const ulEl = document.querySelector("ul")
+    let timer
+    inputEl.oninput = function () {
+        ulEl.innerHTML = `<li class="gjp"></li><li class="gjp"></li><li class="gjp"></li>`
+        // 进行防抖优化
+        if (timer) {
+            clearTimeout(timer)
+        }
+        timer = setTimeout(() => {
+            let content = this.value
+            const xhr = new XMLHttpRequest()
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        let result = JSON.parse(xhr.responseText)
+                        let searchResult = result.g
+                        let str = ``
+                        searchResult.forEach(item => {
+                            str += `<li>${item.q}</li>`
+                        })
+                        ulEl.innerHTML = str
+                    }
+                }
+            }
+            xhr.open("get", `http://www.baidu.com/sugrec?prod=pc&wd=${content}`)
+            xhr.send()
+        }, 1000);
+    }
+</script>

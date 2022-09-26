@@ -46,7 +46,7 @@
   - string
   - symbol
   - bigInt
-- 引用类型
+- 引用类型(对象类型)
   - 可调用/执行对象[函数]
     - function
   - 标准普通对象

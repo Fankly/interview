@@ -40,15 +40,7 @@
     }
     // 缺点:需要滚动一下,才会更新图片,所以需要先执行一次
     lazyLoad()
-    let timer = null
-    window.onscroll = function(){
-        if (timer) {
-            clearTimeout(timer)
-        }
-        timer = setTimeout(()=>{
-             lazyLoad()
-        },50)
-    }
+    window.onscroll = lazyLoad
 </script>
 
 </html>
