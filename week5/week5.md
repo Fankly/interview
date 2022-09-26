@@ -132,15 +132,74 @@ https也是超文本通讯协议  相对http更加安全  443
 
 #### 谈谈你对高阶函数的理解
 
-- 
+- 简而言之，高阶函数是那些将其他函数作为参数或返回其他函数的函数。在高阶函数中作为参数传递的函数被称为回调
+
+高阶函数的优势
+
+- 它们可以帮助我们写出简洁的代码
+- 由于是简洁的代码，调试工作会更加容易
+
+现在 JavaScript 有一些内置的高阶函数，你可能已经在不知不觉中就使用它们了，例如 `filter()`、`reduce()`、`sort()` 和 `forEach()`。
+
+#### function+ajax+callback
+
+```js
+/**
+ * 发送GET请求
+ * 技术栈：function + ajax + callback
+ * @param {String} url 请求地址 
+ * @param {String} params 请求参数   格式：参数名=值&....&参数名=值
+ * @param {Function} callback  回调函数
+ * @param {Function} headersFn 自定义请求头
+ * @return undefined
+ */
+function get(url, params, callback, headersFn = null)
+{
+    // 一、 创建xhr对象
+    const xhr = new XMLHttpRequest
+    // 二、 监听请求状态
+    xhr.onreadystatechange = function() 
+    {
+        // 判断后端返回数据后再处理
+        if (xhr.readyState === 4)
+        {
+            // 判断返回的状态200成功在处理
+            if (xhr.status === 200)
+            {
+                // 获取数据
+                let res = JSON.parse(xhr.responseText)
+                // 不同逻辑处理
+                callback(res)
+            } else {
+                console.log('请求失败：', xhr.status);
+            }
+        }
+    }
+    // 三、 设置请求方式，请求地址
+    // xhr.open('get', `请求地址?请求参数`)
+    xhr.open('get', `${url}?${params}`)
+
+    if (headersFn) headersFn(xhr)
+    
+    // 四、 发送
+    xhr.send(null)
+}
+```
 
 ### day3(视频)
 
 #### 谈谈你对promise的理解
 
+- 概念：ES6异步编程解决方案
+- 作用：常用于封装ajax异步请求
+
 #### 说一下promise原理
 
+- 底层创建了Promise构造函数，并且给该构造函数绑定了then、catch、finally等原型方法，和reject、resolve、all、race等静态方法。
+
 #### 说一下promise几个状态
+
+- 进行中、成功了、失败了
 
 #### Promise.all、Promise.allSettled区别
 
