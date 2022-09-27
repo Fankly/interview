@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+
+            /* 
+                Promise.all(数组中存放promise对象)
+                如果一个失败,全部都失败
+            */
+            const p1 = Promise.resolve(1)
+            const p2 = Promise.resolve(2)
+            const p3 = Promise.reject(3)
+            const arrNew = [p1, p2,p3]
+
+            Promise.all(arrNew)
+                .then(res => {
+                    console.log("都成功:" + res)
+                })
+                .catch(error => {
+                    console.log("都失败:" + error)
+                })
+        </script>
+    </body>
+</html>

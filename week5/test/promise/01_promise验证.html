@@ -10,29 +10,66 @@
     <body>
         <script>
             const p = new Promise((resolve, reject) => {
-                const xhr = new XMLHttpRequest();
+                const xhr = new XMLHttpRequest()
                 xhr.onreadystatechange = () => {
                     if (xhr.readyState === 4) {
                         if (xhr.status === 200) {
-                            let res = JSON.parse(xhr.responseText);
-                            resolve(res);
+                            let res = JSON.parse(xhr.responseText)
+                            resolve(res)
                         } else {
-                            reject(xhr.status);
+                            reject(xhr.status)
                         }
                     }
-                };
-                xhr.open("get", `http://www.baidu.com/sugrec?prod=pc&wd=htm`);
-                xhr.send();
-            });
-
-            p.then(
-                (res) => {
-                    console.log("第一个then的res数据:", res);
-                },
-                (error) => {
-                    console.log("第一个then的err数据:", error);
                 }
-            );
+                xhr.open("get", `http://www.baidu.com/sugrec?prod=pc&wd=htm`)
+                // xhr.open("get", `http://www.baidu.com/sugri`)
+                xhr.send()
+            })
+
+            /* p.then(
+                res => {
+                    console.log("第一个then的res数据:", res)
+                    return "1"
+                },
+                error => {
+                    console.log("第一个then的err数据:", error)
+                    return error
+                }
+            ).then(
+                res => {
+                    console.log("第二个then的res数据:", res)
+                },
+                error => {
+                    console.log("第一个then的err数据:", error)
+                }
+            ) */
+
+            /* p.then(
+                res => {
+                    console.log("第一个then的res数据:", res)
+                    return res
+                },
+                error => {
+                    console.log("第一个then的error数据:", error)
+                    return new Promise((resolve, reject) => {
+                        reject(error)
+                    })
+                }
+            ).then(
+                res => {
+                    console.log("第二个then的res数据:", res)
+                },
+                error => {
+                    console.log("第二个then的error数据:", error)
+                }
+            ) */
+
+            p.then(res => {
+                console.log("第一个then的res数据:", res)
+                return res
+            })
+            console.log(p)
+            
         </script>
     </body>
 </html>

@@ -1,0 +1,40 @@
+<script>
+    class Promise {
+        PromiseState = "pending"
+        PromiseResult = undefined
+        constructor(callback) {
+            const resolve = data => {
+                if (this.PromiseState !== "pending") {
+                    return
+                }
+                this.PromiseState = "fulfilled"
+                this.PromiseResult = data
+            }
+            const reject = data => {
+                if (this.PromiseState !== "pending") {
+                    return
+                }
+                this.PromiseState = "rejected"
+                this.PromiseResult = data
+            }
+            try {
+                callback(resolve, reject)
+            } catch (error) {
+                reject(error.toString())
+            }
+        }
+    }
+    Promise.all = function () {}
+    Promise.allSettled = function () {}
+    Promise.race = function () {}
+    Promise.any = function () {}
+    Promise.prototype.then = function () {}
+    Promise.prototype.catch = function () {}
+    Promise.prototype.finally = function () {}
+    const p = new Promise((resolve, reject) => {
+        console.log(1)
+        resolve(1)
+        reject(2)
+    })
+    console.log(p)
+</script>

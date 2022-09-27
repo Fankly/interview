@@ -47,11 +47,19 @@
   - 对象解构
     - let{键:变量名=默认值,...,键:变量名=默认值} = {键:值,...,键:值}
 
+- 数组新增语法
+
+  - find
+
+  - findIndex
+
+  - indexOf
+
+  - includes
+
 - 字符串新增语法
 
   - 模板字符串
-  - indexOf
-  - includes
 
 - 函数新增语法
 
@@ -148,9 +156,15 @@
 
 #### bind 和 call/apply 的区别
 
-- fun.call(thisArg,param1,param2,...)
-- fun.apply(thisArg,[param1,param2,...])
-- fun.bind(thisArg,param1,param2,...)
+- 参数区别
+
+  - fun.call(thisArg,param1,param2,...)
+
+  - fun.apply(thisArg,[param1,param2,...])
+
+  - fun.bind(thisArg,param1,param2,...)
+
+
 - 是否立刻执行
   - call和apply改变了函数的this上下文之后马上执行该函数
   - bind则是返回改变了上下文后的函数,不执行该函数

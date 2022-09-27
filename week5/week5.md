@@ -70,6 +70,16 @@ ua(浏览器标识)、content-type、token、cookie
 >- `Last-Modified` 只能精确到秒级；
 >- 如果资源被重复生成，而内容不变，则 `Etag` 更精确
 
+```js
+请求行/响应行：method、url、status
+
+请求头headers、cookie、content-type、ua、if-none-match、if-modified-since 
+请求体：请求参数
+
+响应头：content-type 告诉浏览器如何解析数 、etag、last-modified、 Cache-Control...
+响应体：响应的数据
+```
+
 #### get和post有什么区别
 
 >安全角度：post相对比get安全    原因get会在地址栏 因为在地址栏就有访问历史记录  post请求体不会存在来留痕
@@ -195,23 +205,111 @@ function get(url, params, callback, headersFn = null)
 
 #### 说一下promise原理
 
-- 底层创建了Promise构造函数，并且给该构造函数绑定了then、catch、finally等原型方法，和reject、resolve、all、race等静态方法。
+- 底层创建了Promise构造函数，并且给该构造函数绑定了then、catch、finally等原型方法，和reject、resolve、all、race、allSettled、any等静态方法。
 
 #### 说一下promise几个状态
 
 - 进行中、成功了、失败了
 
+```js
+const p = new Promise((resolve, reject) => {
+	// 发送异步请求
+	// 默认触发的  所以是进行中状态
+})
+
+
+追问:为什么状态不可逆
+回答:底层Promise构造函数中会先判断当前是否是pending(进行中状态),不会就会终止代码执行,所以不可逆
+// 明确：底层Promise源码大概是这么写的
+function Promise(callback) {
+
+    this.PromiseState = 'pending'
+    this.PromiseResult = undefined
+    
+    const resolve = data => {
+        if (this.PromiseState != 'pending') return
+        this.PromiseState = 'fulfilled'
+        this.PromiseResult = data
+    }
+    const reject = error => {
+        if (this.PromiseState != 'pending') return
+        this.PromiseState = 'rejected'
+        this.PromiseResult = error
+    }
+
+    try {
+        // callback(参数1, 参数2)
+        // callback(() => {}, () => {})
+        callback(resolve, reject)
+    } catch(error) {
+        reject(error.toString())
+    }
+}
+
+// 然后：你写
+const p = new Promise((resolve, reject) => {
+	resolve(数据1)
+	reject(数据2)
+})
+
+追问:状态之间怎么转换
+回答：通过promise的then机制，来实现状态切换
+const p = new Promise((resolve, reject) => {
+	resolve(数据1)
+})
+
+p
+.then(res => {
+	return Promise.resolve('失败的')
+})
+```
+
 #### Promise.all、Promise.allSettled区别
 
+-  Promise.all( 数组里面是一个个Promise对象 )     有一个失败就走失败
+  - 使用场景
+    - 添加、或删除等两个异步请求都成功了，再提示成功（极端场景少）
+    - 微信小程序上传图片都成功才成功，有一个不行就不行
+  - 面试
+    - 如何保证两个接口都请求成功，再弹框提示添加成功
+-  Promise.allSettled( 数组里面是一个个Promise对象 )      没有失败
+
 #### Promise.race、Promise.any区别
+
+-  Promise.race( 数组里面是一个个Promise对象 )    根据第一个最快返回的决定状态
+  - 底层场景
+    - ajax异步请求封装，添加用户点击多次发送多个异步请求   第一个成功，后续都取消请求
+- Promise.any( 数组里面是一个个Promise对象 )     有一个成功就是then 都失败 才是catch
 
 ### day4
 
 #### 跨域相关
 
+- 跨域导致原因
+  - 概念
+    - 当请求一个url的协议、域名、端口三者之间任意一个与当前页面url不用即为跨域
+  - 原因
+    - 浏览器安全策略/同源策略
+  - 后果
+    - 不能跨网站操作发送ajax请求、WEB存储等]
+- 跨域解决方案
+  - 前端代码 http-proxy-middleware
+  - 谷歌插件
+  - 谷歌命令
+  - jsonp
+  - websocket
+  - postMessage
+    - 监控iframe加载完毕
+    - 通过postMessage H5 新增的API 推送数据
+
 #### 谈谈你对 同步异步的理解
 
+- 会被加入到浏览器队列的代码称之为异步代码，例如  ajax、setTimeout/setInterval、Promise.then 等等
+- 按照书写顺序执行打印的代码称之为同步代码
+
 #### 谈谈你对async，await的理解(视频)
+
+- 
 
 #### 谈谈你generator的理解(视频)
 

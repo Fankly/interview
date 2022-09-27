@@ -62,13 +62,13 @@ function getStyle(ele, attr) {
   - 标签对象.offsetLeft/Top
     - 到最近定位父元素距离,没有就是body标签的距离
   - 标签对象.offsetWidth/Height
-    - 元素宽高(width+padding\*2+border\*2)
+    - 元素宽高(width/height+padding\*2+border\*2)
 - client
   - clientLeft/Top
     - 元素边框
 
   - clientWidth/Height
-    - 元素宽高(width + padding * 2)
+    - 元素宽高(width/height + padding * 2)
   - clientWidth + clientLeft * 2 = offsetWidth
 - scroll
   - scrollLeft/Top 
