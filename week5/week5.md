@@ -304,30 +304,106 @@ p
 
 #### 谈谈你对 同步异步的理解
 
-- 会被加入到浏览器队列的代码称之为异步代码，例如  ajax、setTimeout/setInterval、Promise.then 等等
-- 按照书写顺序执行打印的代码称之为同步代码
+>会被加入到浏览器队列的代码称之为异步代码，例如  ajax、setTimeout/setInterval、Promise.then 等等
+>
+>按照书写顺序执行打印的代码称之为同步代码
 
 #### 谈谈你对async，await的理解(视频)
 
-- 
+> async和await是generator的语法糖,通过async修饰function,await修饰Promise,底层将await后面的表达式先执行一遍,再将await下一行代码加入到微任务中
+>
+> await作用:将promise中的then或者catch取出
+>
+> async和await封装原理:generator函数+执行器(基于generator封装)
 
 #### 谈谈你generator的理解(视频)
 
+> es6新增的语法，通过*号修饰函数，当调用函数的时候返回一个generator对象，通过next函数迭代获取函数内部的数据，当遇到yield就会暂停，再次写next才会继续
+
+- yield无赋值
+  - yield会暂停代码需要next()才会继续向下执行
+  - yield会返回数据
+    - 数据格式{value:yield后面的数据,done:true/false}
+      - done
+        - true generator函数走完了 也就是遇到return
+        - false generator函数还没走完还有代码
+- yield有赋值
+  - yield后面的数据不管结果是什么都默认赋值undefined ;但是下一个next的实参可以改变【上一个yield赋值结果】
+
+
 #### 说出浏览器运行机制
+
+> 浏览器主进程:负责创建和销毁tab进程、负责交互前进后退、负责网页文件下载等
+>
+> 渲染进程：每个tab对应一个渲染进程，下面有GUI渲染线程、JS引擎线程、事件线程、定时器线程、异步请求线程
+>
+> GPU进程：负责3D图绘制
+>
+> 第三方插件进程：负责第三方插件处理，例如跨域、广告拦截插件等
 
 #### 说出浏览器输入网址干了啥
 
+> 浏览器输入网址回车
+> 去DNS服务器找网址对应的IP地址 
+> 根据IP地址加端口访问服务器软件 
+> 服务器返回数据
+> 浏览器通过renderer渲染进程处理，
+> 其中GUI线程负责页面渲染、JS引擎线程负责解析JS代码
+
 #### 说出JS为什么是单线程
+
+> 进程：是cpu分配资源的最小单位；（是能拥有资源和独立运行的最小单位）
+>
+> 线程：是cpu调度的最小单位；（线程是建立在进程的基础上的一次程序运行单位，一个进程中可以有多个线程）
+>
+> #### 浏览器是多进程的
+>
+> 放在浏览器中，每打开一个tab页面，其实就是新开了一个进程，在这个进程中，还有ui渲染线程，js引擎线程，http请求线程等。 所以，浏览器是一个多进程的
+>
+> js是作为浏览器的脚本语言，主要是实现用户与浏览器的交互，以及操作dom；这决定了它只能是单线程，否则会带来很复杂的同步问题
 
 #### 说出JS是单线程 为什么不存在执行效率问题
 
+> JS是单线程执行程序代码，形成一个执行栈，挨个处理；
+>
+> 但是遇到特别耗费时间的代码 ，例如异步请求，事件等，
+>
+> 不会堵塞等待执行，而是交给浏览器其他线程处理后，再丢到执行栈中处理，从而保证还行效率
+
 #### 谈谈你对Event Loop的理解(视频)
+
+> `Event Loop`即事件循环
+>
+> 是指浏览器或`Node`的一种确保javaScript单线程运行时不会阻塞的一种机制，
+>
+> 也就是我们经常使用**异步**的原理。    
+>
+> 种类：浏览器的Event Loop、Node.js中的Event Loop
 
 #### 谈谈你对浏览器的Event Loop理解(视频)
 
+> 浏览器输入网址服务器响应数据后，
+>
+> 浏览器会通过render进程开始解析工作
+>
+> GUI线程负责页面渲染
+>
+> JS引擎线程负责执行JS代码
+>
+> 遇到异步代码会交给其他线程处理，然后放到队列中，
+>
+> 事件循环主要是从队列中取出代码放到执行栈中交给js引擎线程处理
+
 #### 说出宏任务、微任务各有哪些(视频)
 
+> 宏任务:Script整体代码、setTimeout、setInterval、I/O操作(DOM事件、AJAX异步请求)、setImmediate(node环境)、requestAnimationFrame(浏览器环境)
+>
+> 微任务:Promise.then、catch 、finally、async/await（底层还是promise）、process.nextTick（node环境） 、MutationObserver（浏览器环境）
+
 #### 说出先执行宏任务还是微任务(视频)
+
+- 算整体代码script：1宏n微
+- 不算整体代码script：先n微，再1宏 ->  n微，再1宏 ->  n微
 
 ### day5
 

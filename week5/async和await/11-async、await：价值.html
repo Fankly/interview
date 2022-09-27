@@ -1,0 +1,56 @@
+<button>获取最新电影</button>
+
+
+<h1>电影列表</h1>
+<ul></ul>
+
+<h1>百度搜索</h1>
+<ul></ul>
+
+<script src="./axios.js"></script>
+<script>
+// 获取按钮绑定点击事件
+// 事件处理函数中：先请求电影接口，再请求百度搜索接口
+document.querySelector('button').onclick = async function() {
+    document.querySelector('ul:nth-of-type(1)').innerText = ''
+    document.querySelector('ul:nth-of-type(2)').innerText = ''
+    // 电影🎬
+    let res1 = await get(
+        'https://m.maizuo.com/gateway',
+        {
+            cityId:310100,
+            pageNum:1,
+            pageSize:10,
+            type:1,
+            k:3576785
+        },
+        {
+            'X-Client-Info': '{"a":"3000","ch":"1002","v":"5.0.4","e":"1640005088441707321622529","bc":"310100"}',
+            'X-Host': 'mall.film-ticket.film.list',
+            'X-Requested-With': 'XMLHttpRequest',
+        }
+    )
+    
+    res1.data.films.forEach(item => {
+        let liObj = document.createElement('li')
+        liObj.innerText = item.name 
+        document.querySelector('ul:nth-of-type(1)').appendChild(liObj)
+    })
+
+
+    // 获取百度搜索数据🔍
+    let res2 = await get(
+        'http://www.baidu.com/sugrec',
+        {
+            prod:'pc',
+            wd: res1.data.films[0].name
+        },
+    )
+    if (!res2.g) return 
+    res2.g.forEach(item=> {
+        let liObj = document.createElement('li')
+        liObj.innerText = item.q 
+        document.querySelector('ul:nth-of-type(2)').appendChild(liObj)
+    })
+}
+</script>
