@@ -26,8 +26,8 @@
                     "http://kg.zhaodashen.cn/v1/public/captcha.jsp?t=" +
                     new Date().getTime()
             }
-            loginBtn.onclick = async function () {
-                const res = await ajax({
+            loginBtn.onclick = function () {
+                const res = ajax({
                     url: "",
                     method: "post",
                     data: {
@@ -36,7 +36,7 @@
                         captcha,
                     },
                 })
-                console.log(res)
+              
             }
         </script>
     </body>
