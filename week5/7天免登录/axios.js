@@ -41,7 +41,11 @@ function post(url, params, headers = {}) {
         for (const key in headers) {
             xhr.setRequestHeader(key, headers[key])
         }
-        xhr.send(params)
+        let temp = []
+        for (let key in params) {
+            temp.push(`${key}=${params[key]}`)
+        }
+        xhr.send(temp.join("&"))
     })
     return p
 }

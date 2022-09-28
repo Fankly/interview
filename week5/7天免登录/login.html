@@ -10,24 +10,51 @@
         用户<input type="text" id="uname" /> 密码<input type="text" id="pwd" />
         验证码<input type="text" id="captcha" />
         <img src="http://kg.zhaodashen.cn/v1/public/captcha.jsp" alt="" />
+        七天免登录<input type="checkbox" id="remember" />
         <button>登录</button>
 
-        <script src="./"></script>
+        <script src="./axios.js"></script>
         <script>
             const imgEl = document.querySelector("img")
-            const uname = document.querySelector("#uname").value
-            const pwd = document.querySelector("#pwd").value
-            const captcha = document.querySelector("#captcha").value
             const btnEl = document.querySelector("button")
-            
 
             imgEl.onclick = function () {
                 imgEl.src =
                     "http://kg.zhaodashen.cn/v1/public/captcha.jsp?t" + Date.now
             }
 
-            btnEl.onclick = function(){
-                
+            btnEl.onclick = async function () {
+                const uname = document.querySelector("#uname").value
+                const pwd = document.querySelector("#pwd").value
+                const captcha = document.querySelector("#captcha").value
+                const remember = document.querySelector("#remember")
+
+                const res = await post(
+                    "http://kg.zhaodashen.cn/v1/public/login.jsp",
+                    {
+                        uname,
+                        pwd,
+                        captcha,
+                    }
+                )
+
+                // 7天免登录
+                if (res.meta.state === 200) {
+                    if (remember.checked) {
+                        localStorage.setItem("uname", uname)
+                        localStorage.setItem(
+                            "expires",
+                            // Date.now + 7 * 1000 * 60 * 60 * 24 //7天有效时间
+                            Date.now + 30 * 1000
+                        )
+                    } else {
+                        sessionStorage.setItem("uname", uname)
+                    }
+                    alert(res.meta.msg)
+                    location.href = "./index.html"
+                } else {
+                    alert(res.meta.msg)
+                }
             }
         </script>
     </body>
