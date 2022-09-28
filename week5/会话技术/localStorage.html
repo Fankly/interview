@@ -1,0 +1,20 @@
+<script>
+    // localStorage.setItem(key,value)
+    // localStorage.getItem(key)
+    // localStorage.removeItem(key)
+    // localStorage.clear()
+    // document.cookie 获取
+    // document.cookie="key:value" 设置
+
+    /* console.log(Date.now())
+console.log(new Date())
+
+console.log(new Date().getTime()) */
+
+    const d = new Date()
+    d.setTime(d.getTime() - 1000 * 3600 * 8 + 1000 * 20)
+    console.log(d)
+
+    document.cookie = `name=武大郎;expires=${d}`
+    console.log(document.cookie)
+</script>

@@ -15,13 +15,9 @@
 
 #### 谈谈你对HTTP理解
 
-```js
-面试：HTTP是超文本传输协议，规定了客户端和服务端如何通信，然后由两个部分组成分别是请求、响应
-
-学习：就是一个规则，你必须按照这个规则才可以和后端交互拿数据
-```
-
-
+> 面试：HTTP是超文本传输协议，规定了客户端和服务端如何通信，然后由两个部分组成分别是请求、响应
+>
+> 学习：就是一个规则，你必须按照这个规则才可以和后端交互拿数据
 
 ####  HTTP周边：HTTP动词(请求方式)
 
@@ -32,22 +28,19 @@
 
 ####  HTTP周边：状态码
 
-```js
-2xx  200 成功  201 成功并且服务器创建了新数据
-3xx  301 站内跳转   302 站外跳转   304  浏览器缓存
-4xx  400 你传递给后端的参数   401 密码错误  403 没有权限  404文件不存在  405 请求方式有误
-5xx  500 服务器有误
-```
+> 2xx  200 成功  201 成功并且服务器创建了新数据
+>
+> 3xx  301 站内跳转   302 站外跳转   304  浏览器缓存
+>
+> 4xx  400 你传递给后端的参数   401 密码错误  403 没有权限  404文件不存在  405 请求方式有误
+>
+> 5xx  500 服务器有误
 
 
 
 #### HTTP周边：请求头参数
 
-```js
-ua(浏览器标识)、content-type、token、cookie
-```
-
-
+> ua(浏览器标识)、content-type、token、cookie
 
 #### HTTP周边：强制缓存、协商缓存
 
@@ -155,44 +148,93 @@ https也是超文本通讯协议  相对http更加安全  443
 
 ```js
 /**
- * 发送GET请求
- * 技术栈：function + ajax + callback
- * @param {String} url 请求地址 
- * @param {String} params 请求参数   格式：参数名=值&....&参数名=值
- * @param {Function} callback  回调函数
- * @param {Function} headersFn 自定义请求头
- * @return undefined
+ * 发送get异步请求
+ * @param {stirng} url 请求地址
+ * @param {object} params 请求参数，格式  {参数名:数据,....,参数名:数据}
+ * @param {function} callback 回调函数
+ * @param {object} headers 自定义请求头   {键:值, token: '数据', 'content-type': '数据'}
  */
-function get(url, params, callback, headersFn = null)
+function get(url, params, callback, headers = {}) {
+  // 一、创建xhr对象
+  const xhr = new XMLHttpRequest();
+  // 二、设置请求方式、请求地址
+  let temp = [];
+  for (let key in params) {
+    temp.push(`${key}=${params[key]}`);
+  }
+  xhr.open("get", `${url}?${temp.join("&")}`);
+  // 三、监听请求状态
+  xhr.onreadystatechange = () => {
+    // 判断返回
+    if (xhr.readyState === 4) {
+      // 判断状态
+      if (xhr.status === 200) {
+        // 获取数据
+        let res = JSON.parse(xhr.responseText);
+        // 逻辑处理
+        // console.log(res);
+        callback(res);
+      } else {
+        console.log(xhr.status);
+      }
+    }
+  };
+  // 四、发送
+  for (let key in headers) {
+    xhr.setRequestHeader(key, headers[key]);
+  }
+  xhr.send();
+}
+```
+
+#### function+ajax+promise
+
+```js
+/**
+ * 发送get请求
+ * @param {stirng} url 请求地址
+ * @param {object} params 请求参数
+ * @param {object} headers 自定义请求头
+ * @returns 
+ */
+function get(url, params, headers = {})
 {
-    // 一、 创建xhr对象
-    const xhr = new XMLHttpRequest
-    // 二、 监听请求状态
-    xhr.onreadystatechange = function() 
-    {
-        // 判断后端返回数据后再处理
-        if (xhr.readyState === 4)
-        {
-            // 判断返回的状态200成功在处理
-            if (xhr.status === 200)
+    const p = new Promise((resolve, reject) => {
+        // 一、创建xhr对象
+        const xhr = new XMLHttpRequest
+        // 二、设置请求方式、请求地址
+        let temp = []
+        for (let key in params) {
+            temp.push(`${key}=${params[key]}`)
+        }
+        xhr.open('get', `${url}?${temp.join('&')}`)
+        // 三、监控请求状态
+        xhr.onreadystatechange = () => {
+            // 返回
+            if (xhr.readyState === 4)
             {
-                // 获取数据
-                let res = JSON.parse(xhr.responseText)
-                // 不同逻辑处理
-                callback(res)
-            } else {
-                console.log('请求失败：', xhr.status);
+                // 状态码
+                if (xhr.status === 200)
+                {
+                    // 获取数据
+                    let res = JSON.parse(xhr.responseText)
+                    // 逻辑处理
+                    // console.log(res)
+                    resolve(res)
+                } else {
+                    // console.log(xhr.status)
+                    reject(xhr.status)
+                }
             }
         }
-    }
-    // 三、 设置请求方式，请求地址
-    // xhr.open('get', `请求地址?请求参数`)
-    xhr.open('get', `${url}?${params}`)
+        // 四、发送请求
+        for (let key in headers) {
+            xhr.setRequestHeader(key, headers[key])
+        }
+        xhr.send()
+    })
 
-    if (headersFn) headersFn(xhr)
-    
-    // 四、 发送
-    xhr.send(null)
+    return p  // 后期谁调用get就会拿到promise对象 通过then就可以获取数据 实现不同的业务逻辑
 }
 ```
 
@@ -217,9 +259,6 @@ const p = new Promise((resolve, reject) => {
 	// 默认触发的  所以是进行中状态
 })
 
-
-追问:为什么状态不可逆
-回答:底层Promise构造函数中会先判断当前是否是pending(进行中状态),不会就会终止代码执行,所以不可逆
 // 明确：底层Promise源码大概是这么写的
 function Promise(callback) {
 
@@ -238,31 +277,29 @@ function Promise(callback) {
     }
 
     try {
-        // callback(参数1, 参数2)
-        // callback(() => {}, () => {})
-        callback(resolve, reject)
-    } catch(error) {
-        reject(error.toString())
-    }
-}
-
-// 然后：你写
+        // c 
 const p = new Promise((resolve, reject) => {
 	resolve(数据1)
 	reject(数据2)
 })
 
-追问:状态之间怎么转换
-回答：通过promise的then机制，来实现状态切换
-const p = new Promise((resolve, reject) => {
-	resolve(数据1)
-})
-
-p
-.then(res => {
-	return Promise.resolve('失败的')
-})
 ```
+
+#### 说一下promise为什么状态不可逆
+
+> 底层Promise构造函数中会先判断当前是否是pending(进行中状态),不会就会终止代码执行,所以不可逆
+
+#### 说一下promise状态之间怎么转换
+
+> 通过promise的then机制，来实现状态切换
+> const p = new Promise((resolve, reject) => {
+> 	resolve(数据1)
+> })
+>
+> p
+> .then(res => {
+> 	return Promise.resolve('失败的')
+> })
 
 #### Promise.all、Promise.allSettled区别
 
@@ -297,6 +334,9 @@ p
   - 谷歌插件
   - 谷歌命令
   - jsonp
+    - 一个跨域的解决方案，需要前端后端一起配合
+    - JSONP方案后端：得返回调用函数，函数的实参是JSON数据格式
+    - JSONP方案前端：不能用ajax技术请求，而是改成script引入接口
   - websocket
   - postMessage
     - 监控iframe加载完毕
@@ -315,10 +355,12 @@ p
 > await作用:将promise中的then或者catch取出
 >
 > async和await封装原理:generator函数+执行器(基于generator封装)
+>
+> 函数只要加async就返回promise对象
 
 #### 谈谈你generator的理解(视频)
 
-> es6新增的语法，通过*号修饰函数，当调用函数的时候返回一个generator对象，通过next函数迭代获取函数内部的数据，当遇到yield就会暂停，再次写next才会继续
+> es6新增的语法(异步编程解决方案)，通过*号修饰函数，当调用函数的时候返回一个generator对象，通过next函数迭代获取函数内部的数据，当遇到yield就会暂停，再次写next才会继续
 
 - yield无赋值
   - yield会暂停代码需要next()才会继续向下执行
@@ -333,6 +375,8 @@ p
 
 #### 说出浏览器运行机制
 
+> 四个进程,五个线程
+>
 > 浏览器主进程:负责创建和销毁tab进程、负责交互前进后退、负责网页文件下载等
 >
 > 渲染进程：每个tab对应一个渲染进程，下面有GUI渲染线程、JS引擎线程、事件线程、定时器线程、异步请求线程
@@ -405,14 +449,112 @@ p
 - 算整体代码script：1宏n微
 - 不算整体代码script：先n微，再1宏 ->  n微，再1宏 ->  n微
 
+#### 谈谈你对Symbol的理解(扩展)
+
+> es6中用来生成独一无二的值,他有很多的属性和方法,可以用来改变数组是否展开,以及给for...of提供消费的接口等
+>
+> 给对象增加一个独一无二的属性,正常的方法获取不到
+
+#### 如何获取Symbol属性(扩展)
+
+> Object.getOwnPropertySymbols(obj)
+>
+> Reflect.ownKeys(obj)
+>
+> 或者通过Symbol.for创建
+
 ### day5
 
 #### 前端存储有几种
 
+> 常用的2种，主要是cookie、h5存储；浏览器其实还有web sql、indexdb
+>
+> H5
+> cookie
+> web sql
+> indexdb
+
 #### cookie和h5的区别
 
-#### 如何实现localStorage7天过期
+- 性能角度
+  - 相对而言H5存储性能比COOKIE高
+- 存储空间
+  - H5单条数据5M左右、COOKIE单条数据4KB
+- 生命周期
+  - cookie 自己设置,如果不设置浏览器关闭销毁
+  - localStorage 永久
+  - sessionStorage 窗口
 
-#### 如何实现七天免登录
+#### h5可以存储对象类型吗(拓展)
 
-#### 登录是如何实现的
+> h5不可以存储对象类型,但是可以使用JSON.stringify()转换成字符串,这样就可以存储
+
+#### 如何实现localStorage7天过期(视频)
+
+```js
+cookie.  1*1000*60*60*24*7
+
+
+login.html
+
+步骤1：存数据的时候 也额外存一个键叫 expires  记录时间
+	localStorage.setItem('uname', 'value')
+	localStorage.setItem('expires', (new Date).getTime() + 1*1000*60*60*24*7 )
+member.html
+步骤2：使用的时候增加判断
+	// 公式：当前使用时间 > 存储时间 （过期了）
+	// 举例：比如你是2月1号存 
+	// 然后：你加了7天  2月8号过期
+	// 最后： 2月5号 > 2月8号   不成立 没过期
+	// 最后： 2月11号 > 2月8号  成立  过期
+```
+
+#### 如何实现七天免登录(视频)
+
+1. 登录的时候存一个时间       当前时间+7天时间戳
+
+   ```js
+   localStorage.setItem('uname', 'value')
+   localStorage.setItem('expires', (new Date).getTime() + 1*1000*60*60*24*7 )
+   ```
+
+2. 后期用的时候判断是否过期
+
+   ```js
+   
+   <h1>会员中心</h1>
+   
+   <div></div>
+   
+   <script>
+   // 获取
+   // let localUname = localStorage.getItem('uname')
+   // 明确：上一行代码有瑕疵
+   // 因为：永久
+   // 解决：加时间判断
+   // let localUname = 当前时间>存储时间 ? 过期了null : 没过期使用
+   // 分析：
+   // 存储时间：今天8.1登录 存7天   8.8不可以
+   // 当前时间：8.1    8.3   8.6   8.9
+   
+   let localUname = (new Date).getTime()>localStorage.getItem('expires') ? null : localStorage.getItem('uname')
+   let sessionUname = sessionStorage.getItem('uname')
+   
+   let uname = localUname || sessionUname
+   // 判断
+   if (uname)
+   {
+       document.querySelector('div').innerHTML = `<h1>${uname}</h1><a href="./logout.html">退出</a>`
+   } else {
+       document.querySelector('div').innerHTML = `<a href="./login.html">登录</a>`
+   }
+   </script>
+   ```
+
+#### 登录是如何实现的(视频)
+
+> 步骤1：登录按钮绑定点击事件
+>
+> 步骤2：事件处理函数中  获取表单数据，请求接口
+>
+> 步骤3：失败-弹框提示，成功-存储、提示、跳转

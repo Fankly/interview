@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>登录</h1>
+        账号<input type="text" id="uname" /> 密码<input type="text" id="pwd" />
+        验证码<input type="text" id="captcha" />
+        <img src="http://kg.zhaodashen.cn/v1/public/captcha.jsp" />
+        <button>登录</button>
+        <script src="./ajax_promise.js"></script>
+        <script>
+            const imgEl = document.querySelector("img")
+            const loginBtn = document.querySelector("button")
+            const uname = document.querySelector("#uname").value
+            const pwd = document.querySelector("#pwd").value
+            const captcha = document.querySelector("#captcha").value
+
+            imgEl.onclick = function () {
+                //  防止缓存
+                this.src =
+                    "http://kg.zhaodashen.cn/v1/public/captcha.jsp?t=" +
+                    new Date().getTime()
+            }
+            loginBtn.onclick = async function () {
+                const res = await ajax({
+                    url: "",
+                    method: "post",
+                    data: {
+                        uname,
+                        pwd,
+                        captcha,
+                    },
+                })
+                console.log(res)
+            }
+        </script>
+    </body>
+</html>
