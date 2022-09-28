@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        用户<input type="text" id="uname" /> 密码<input type="text" id="pwd" />
+        验证码<input type="text" id="captcha" />
+        <img src="http://kg.zhaodashen.cn/v1/public/captcha.jsp" alt="" />
+        <button>登录</button>
+
+        <script src="./"></script>
+        <script>
+            const imgEl = document.querySelector("img")
+            const uname = document.querySelector("#uname").value
+            const pwd = document.querySelector("#pwd").value
+            const captcha = document.querySelector("#captcha").value
+            const btnEl = document.querySelector("button")
+            
+
+            imgEl.onclick = function () {
+                imgEl.src =
+                    "http://kg.zhaodashen.cn/v1/public/captcha.jsp?t" + Date.now
+            }
+
+            btnEl.onclick = function(){
+                
+            }
+        </script>
+    </body>
+</html>
