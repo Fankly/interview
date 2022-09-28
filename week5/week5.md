@@ -348,7 +348,7 @@ const p = new Promise((resolve, reject) => {
 >
 >按照书写顺序执行打印的代码称之为同步代码
 
-#### 谈谈你对async，await的理解(视频)
+#### 谈谈你对async，await的理解
 
 > async和await是generator的语法糖,通过async修饰function,await修饰Promise,底层将await后面的表达式先执行一遍,再将await下一行代码加入到微任务中
 >
@@ -358,7 +358,7 @@ const p = new Promise((resolve, reject) => {
 >
 > 函数只要加async就返回promise对象
 
-#### 谈谈你generator的理解(视频)
+#### 谈谈你generator的理解
 
 > es6新增的语法(异步编程解决方案)，通过*号修饰函数，当调用函数的时候返回一个generator对象，通过next函数迭代获取函数内部的数据，当遇到yield就会暂停，再次写next才会继续
 
@@ -414,7 +414,7 @@ const p = new Promise((resolve, reject) => {
 >
 > 不会堵塞等待执行，而是交给浏览器其他线程处理后，再丢到执行栈中处理，从而保证还行效率
 
-#### 谈谈你对Event Loop的理解(视频)
+#### 谈谈你对Event Loop的理解
 
 > `Event Loop`即事件循环
 >
@@ -424,7 +424,7 @@ const p = new Promise((resolve, reject) => {
 >
 > 种类：浏览器的Event Loop、Node.js中的Event Loop
 
-#### 谈谈你对浏览器的Event Loop理解(视频)
+#### 谈谈你对浏览器的Event Loop理解
 
 > 浏览器输入网址服务器响应数据后，
 >
@@ -438,24 +438,24 @@ const p = new Promise((resolve, reject) => {
 >
 > 事件循环主要是从队列中取出代码放到执行栈中交给js引擎线程处理
 
-#### 说出宏任务、微任务各有哪些(视频)
+#### 说出宏任务、微任务各有哪些
 
 > 宏任务:Script整体代码、setTimeout、setInterval、I/O操作(DOM事件、AJAX异步请求)、setImmediate(node环境)、requestAnimationFrame(浏览器环境)
 >
 > 微任务:Promise.then、catch 、finally、async/await（底层还是promise）、process.nextTick（node环境） 、MutationObserver（浏览器环境）
 
-#### 说出先执行宏任务还是微任务(视频)
+#### 说出先执行宏任务还是微任务
 
 - 算整体代码script：1宏n微
 - 不算整体代码script：先n微，再1宏 ->  n微，再1宏 ->  n微
 
-#### 谈谈你对Symbol的理解(扩展)
+#### 谈谈你对Symbol的理解(了解)
 
 > es6中用来生成独一无二的值,他有很多的属性和方法,可以用来改变数组是否展开,以及给for...of提供消费的接口等
 >
 > 给对象增加一个独一无二的属性,正常的方法获取不到
 
-#### 如何获取Symbol属性(扩展)
+#### 如何获取Symbol属性(了解)
 
 > Object.getOwnPropertySymbols(obj)
 >
@@ -489,10 +489,10 @@ const p = new Promise((resolve, reject) => {
 
 > h5不可以存储对象类型,但是可以使用JSON.stringify()转换成字符串,这样就可以存储
 
-#### 如何实现localStorage7天过期(视频)
+#### 如何实现localStorage7天过期
 
 ```js
-cookie.  1*1000*60*60*24*7
+doucment.cookie.  1*1000*60*60*24*7(设置的世界时间)
 
 
 login.html
@@ -509,7 +509,7 @@ member.html
 	// 最后： 2月11号 > 2月8号  成立  过期
 ```
 
-#### 如何实现七天免登录(视频)
+#### 如何实现七天免登录
 
 1. 登录的时候存一个时间       当前时间+7天时间戳
 
@@ -551,7 +551,7 @@ member.html
    </script>
    ```
 
-#### 登录是如何实现的(视频)
+#### 登录是如何实现的
 
 > 步骤1：登录按钮绑定点击事件
 >

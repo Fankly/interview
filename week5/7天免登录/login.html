@@ -45,7 +45,7 @@
                         localStorage.setItem(
                             "expires",
                             // Date.now + 7 * 1000 * 60 * 60 * 24 //7天有效时间
-                            Date.now + 30 * 1000
+                            Date.now() + 30 * 1000
                         )
                     } else {
                         sessionStorage.setItem("uname", uname)

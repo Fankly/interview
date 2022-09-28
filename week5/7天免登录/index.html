@@ -14,11 +14,13 @@
         <a href="#">退出</a> -->
 
         <script>
-            const uname =
-                Date.now > localStorage.getItem("expires")
+            const localUname =
+                Date.now() > localStorage.getItem("expires")
                     ? null
-                    : localStorage.getItem("uname") ||
-                      sessionStorage.getItem("uname")
+                    : localStorage.getItem("uname")
+            console.log(localUname)
+
+            const uname = localUname || sessionStorage.getItem("uname")
             const container = document.querySelector(".container")
             if (uname) {
                 container.innerHTML = `
