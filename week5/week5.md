@@ -238,7 +238,7 @@ function get(url, params, headers = {})
 }
 ```
 
-### day3(视频)
+### day3
 
 #### 谈谈你对promise的理解
 
@@ -348,16 +348,6 @@ const p = new Promise((resolve, reject) => {
 >
 >按照书写顺序执行打印的代码称之为同步代码
 
-#### 谈谈你对async，await的理解
-
-> async和await是generator的语法糖,通过async修饰function,await修饰Promise,底层将await后面的表达式先执行一遍,再将await下一行代码加入到微任务中
->
-> await作用:将promise中的then或者catch取出
->
-> async和await封装原理:generator函数+执行器(基于generator封装)
->
-> 函数只要加async就返回promise对象
-
 #### 谈谈你generator的理解
 
 > es6新增的语法(异步编程解决方案)，通过*号修饰函数，当调用函数的时候返回一个generator对象，通过next函数迭代获取函数内部的数据，当遇到yield就会暂停，再次写next才会继续
@@ -372,11 +362,19 @@ const p = new Promise((resolve, reject) => {
 - yield有赋值
   - yield后面的数据不管结果是什么都默认赋值undefined ;但是下一个next的实参可以改变【上一个yield赋值结果】
 
+#### 谈谈你对async，await的理解
+
+> async和await是generator的语法糖,通过async修饰function,await修饰Promise,底层将await后面的表达式先执行一遍,再将await下一行代码加入到微任务中
+>
+> await作用:将promise中的then或者catch取出
+>
+> async和await封装原理:generator函数+执行器(基于generator封装)
+>
+> 函数只要加async就返回promise对象
+
 
 #### 说出浏览器运行机制
 
-> 四个进程,五个线程
->
 > 浏览器主进程:负责创建和销毁tab进程、负责交互前进后退、负责网页文件下载等
 >
 > 渲染进程：每个tab对应一个渲染进程，下面有GUI渲染线程、JS引擎线程、事件线程、定时器线程、异步请求线程
@@ -410,7 +408,7 @@ const p = new Promise((resolve, reject) => {
 
 > JS是单线程执行程序代码，形成一个执行栈，挨个处理；
 >
-> 但是遇到特别耗费时间的代码 ，例如异步请求，事件等，
+> 但是遇到特别耗费时间的代码 ，例如异步请求，事件等
 >
 > 不会堵塞等待执行，而是交给浏览器其他线程处理后，再丢到执行栈中处理，从而保证还行效率
 
@@ -521,7 +519,6 @@ member.html
 2. 后期用的时候判断是否过期
 
    ```js
-   
    <h1>会员中心</h1>
    
    <div></div>

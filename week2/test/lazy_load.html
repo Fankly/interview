@@ -1,54 +1,81 @@
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Document</title>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <div class="box">
+            <img
+                src="./imgs/load.webp"
+                data-src="./imgs/1.jpg"
+                style="height: 400px"
+            />
+        </div>
+        <div class="box">
+            <img
+                src="./imgs/load.webp"
+                data-src="./imgs/2.jpg"
+                style="height: 400px"
+            />
+        </div>
+        <div class="box">
+            <img
+                src="./imgs/load.webp"
+                data-src="./imgs/3.jpg"
+                style="height: 400px"
+            />
+        </div>
+        <div class="box">
+            <img
+                src="./imgs/load.webp"
+                data-src="./imgs/5.jpg"
+                style="height: 400px"
+            />
+        </div>
+        <div class="box">
+            <img
+                src="./imgs/load.webp"
+                data-src="./imgs/6.jpg"
+                style="height: 400px"
+            />
+        </div>
+        <div class="box">
+            <img
+                src="./imgs/load.webp"
+                data-src="./imgs/7.jpg"
+                style="height: 400px"
+            />
+        </div>
+        <div class="box">
+            <img
+                src="./imgs/load.webp"
+                data-src="./imgs/8.gif"
+                style="height: 400px"
+            />
+        </div>
+    </body>
 
-<style>
-    .box {
-        margin: 10px;
-    }
-</style>
-</head>
+    <script>
+        function lazyLoad() {
+            const imgsObject = document.querySelectorAll("img")
+            const viewHeight =
+                window.innerHeight || document.documentElement.clientHeight
+            const scrollHeight =
+                document.body.scrollTop || document.documentElement.scrollTop
+            const totalView = viewHeight + scrollHeight
 
-<body>
-    <div class="box"><img src="./imgs/load.webp" data-src="./imgs/1.jpg"></div>
-    <div class="box"><img src="./imgs/load.webp" data-src="./imgs/2.jpg"></div>
-    <div class="box"><img src="./imgs/load.webp" data-src="./imgs/3.jpg"></div>
-    <div class="box"><img src="./imgs/load.webp" data-src="./imgs/5.jpg"></div>
-    <div class="box"><img src="./imgs/load.webp" data-src="./imgs/6.jpg"></div>
-    <div class="box"><img src="./imgs/load.webp" data-src="./imgs/7.jpg"></div>
-    <div class="box"><img src="./imgs/load.webp" data-src="./imgs/8.gif"></div>
-</body>
-<script>
-    function lazyLoad() {
-        // 可视高度
-        const viewHeight = window.innerHeight || document.documentElement.clientHeight
-        // 滚动高度
-        const scrollHeight = document.body.scrollTop || document.documentElement.ScrollTop
-
-        // 获取可见内容高度
-        const viewContentHeight = viewHeight + scrollHeight
-
-        //获取所有图片
-        const imgs = document.querySelectorAll("img")
-        //图片遍历
-        imgs.forEach(item => {
-            if (item.scrollTop <= viewContentHeight) {
-                // item.src = item.dataset.src
-                item.src = item.getAttribute("data-src")
-            }
-        })
-    }
-    // 缺点:需要滚动一下,才会更新图片,所以需要先执行一次
-    lazyLoad()
-    let timer = null
-    window.onscroll = function(){
-        if (timer) {
-            clearTimeout(timer)
+            imgsObject.forEach(item => {
+                if (item.offsetTop < totalView) {
+                    console.log(item.offsetTop)
+                    item.src = item.dataset.src
+                }
+            })
         }
-        timer = setTimeout(()=>{
-             lazyLoad()
-        },50)
-    }
-</script>
 
+        lazyLoad()
+        window.onscroll = lazyLoad
+    </script>
 </html>
