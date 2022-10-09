@@ -1,0 +1,103 @@
+<!--  
+Class与Style绑定
+- 为啥有：减少视图操作
+- 是什么：就是class和style属性去使用模型数据
+- 啥语法：:class="数组或对象"  :style="对象"
+- 哪里用：tab选项卡、两栏布局菜单
+
+计算属性
+- 为啥有：1-提升性能，2-减少视图操作（腿子和桌子，购物车总价）
+- 是什么：vue中的新技术，主要用来封装代码  从而提升性能，减少视图操作
+- 啥语法：最后统一写
+- 哪里用：一个数据依赖另一个数据计算的结果、或者需要缓存提升性能、还有vuex大量使用。
+
+侦听器
+- 为啥有：1-避免既写v-model又事件时优先级搞懵逼，2-减少视图操作
+- 是什么：vue中用来监控模型数据变化的技术
+- 啥语法：最后统一写
+- 哪里用：全选全不选、搜索、日期筛选、监控弹框是否显示等等
+
+过滤器
+- 为啥有：减少视图代码量 
+- 是什么：vue中用来过滤数据的技术
+- 啥语法：最后统一写
+- 哪里用：过滤性别、订单状态、支付状态、收货状态、冻结状态等等
+
+
+自定义指令
+- 为啥有：自定义指令封装DOM操作语法
+- 是什么：vue官方提供的API
+- 啥语法：最后统一写
+- 哪里用：拖拽、点击复制、删除标签等等
+
+ref属性
+- 为啥有：减少DOM查找
+- 是什么：vue用来减少DOM查找的技术
+- 啥语法：1-加ref属性、2-通过this.$refs.标识  =》 切记打印出来就是DOM对象
+- 哪里用：echarts、短信倒计时、二维码、编辑器、组件通信。
+
+混入
+- 为啥有：封装vue代码
+- 是什么：就是用来减少vue代码冗余的技术
+- 啥语法：最后统一写
+- 哪里用：封装项目跳转、项目删除提示等等
+
+
+const vm = new Vue({
+  el: '',
+  data: { 键:值 },
+  methods: {   // {{ 函数名() }}
+    函数名Fn() {}
+  },
+  computed: {   // {{ 函数名 }}
+    函数名Cp() {}
+  },
+  watch: {  // 不能调用
+    data中的键(newData,oldData) {}
+  },
+  filters: {},
+  directives: {},
+  mixins: {},
+})
+
+{{ data中的键 | 过滤器名称 }}
+{{ data中的键 | 过滤器名称(实参2,...) }}
+
+Vue.filter('过滤器名称', (管道左边数据, 小括号里面的) => {
+  return 结果
+})
+
+Vue.directive('自定义指令名称', {
+  bind(el){}
+  inserted(el){}
+  update(){}
+  unbind(){}
+})
+
+Vue.mixin({
+  data,
+  methods
+  ...
+})
+-->
+
+<div id="root">
+  <h1>{{msg}}</h1>
+  <button ref="aaa">测试</button>
+  <button @click="fontSize++">+</button>
+  <!--  
+  切记切记切记：只要写冒号或者v-bind就代表写js代码  变量会去模型中找
+  -->
+  <p :a=" msg + 'abc'  " :style="{fontSize: fontSize+'px'}">你好(*´▽｀)ノノ</p>
+</div>
+<script src="http://unpkg.zhimg.com/vue@2"></script>
+<script>
+  const vm = new Vue({
+    el: "#root",
+    data: {
+      msg: 666,
+      fontSize: 16,
+    },
+    methods: {},
+  });
+</script>

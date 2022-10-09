@@ -1,0 +1,68 @@
+<!--  
+# VUE相关概念
+- 为啥学VUE：1-减少DOM操作（class/watch/ref），2-组件化
+- 是什么：渐进式javascript框架
+
+b class=""
+bObj.className = 'hover'
+
+b :class="res"
+data: {
+    res: 'hover'
+}
+this.res = 'other'
+
+# 数据在模型定义，然后通过VUE指令在视图显示
+
+{{}} v-text
+v-html
+v-bind 简写冒号
+v-on  简写@
+v-for
+v-if v-else-if v-else  v-show
+v-pre/once/cloak
+
+
+# 验证：通过TODOLIST案例
+
+-->
+
+<div id="root">
+  <input type="text" v-model="content" /> <button @click="addFn">添加</button>
+  <ul>
+    <!-- <li v-for="item in todos"> -->
+    <li v-for="(item, i) in todos">
+      {{item}} {{item.id}} <button @click="delFn(i)">删除</button>
+    </li>
+  </ul>
+</div>
+<script src="http://unpkg.zhimg.com/vue@2"></script>
+<script>
+  // MVVM
+  const vm = new Vue({
+    el: "#root",
+    data: {
+      content: "",
+      todos: [
+        { id: 1, content: "睡觉" },
+        { id: 2, content: "吃饭" },
+        { id: 3, content: "撒娇让你老公给你写BUG" },
+      ],
+    },
+    methods: {
+      addFn() {
+        this.todos.push({
+          id: this.todos.length + 1,
+          content: this.content,
+        });
+      },
+      delFn(index) {
+        // 公式1： this === vm === Vue构造函数中this
+        // 公式2： this.$el/$data中所有键/methods中所有键
+
+        // 语法： 数组.splice(索引, 个数)
+        this.todos.splice(index, 1);
+      },
+    },
+  });
+</script>
