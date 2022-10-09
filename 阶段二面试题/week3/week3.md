@@ -174,35 +174,75 @@
 
 #### 手写bind/call/apply 原理
 
-apply和call
+call
 
 ```js
- Function.prototype._execFn = function (thisArg, otherArgs) {
-            thisArg = (thisArg === null || thisArg === undefined) ? window : Object(thisArg)
-            thisArg.fn = this
-            thisArg.fn(...otherArgs)
-            delete thisArg.fn
-        }
-Function.prototype.call = function(thisArg,...otherArgs) {
-    execFn(thisArg,otheArgs,this)
-}
+<script>
+  Function.prototype.myCall = function (context, ...args) {
+    context = context ? Object(context) : window
+    context.fn = this
+    let res = context.fn(...args)
+    return res
+  }
 
-Function.prototype.apply = function(thisArg,otherArgs){
-    execFn(thisArg,otherArgs)
-}
+  function testFn(data1, data2) {
+    console.log('this：', this)
+    console.log('args：', data1, data2)
+  }
+  let obj = { a: 1, b: 2 }
+  testFn.call(obj, 11, 22)
+  testFn.myCall(obj, 11, 22)
+</script>
+```
+
+apply
+
+```js
+<script>
+  Function.prototype.myApply = function (context, args) {
+    context = context ? Object(context) : window
+    context.fn = this
+    let res = context.fn(...args)
+    return res
+  }
+
+  function testFn(data1, data2) {
+    console.log('this：', this)
+    console.log('args：', data1, data2)
+  }
+  let obj = { a: 1, b: 2 }
+  testFn.apply(obj, [11, 22])
+  testFn.myApply(obj, [11, 22])
+</script>
 ```
 
 bind
 
 ```js
- Function.prototype._bind = function (thisArg, ...otherArgs) {
-            thisArg = (thisArg === null || thisArg === undefined) ? window : Object(thisArg)
-            thisArg.fn = this
-            return (...newArgs) => {
-                var allArgs = [...otherArgs,newArgs]
-                thisArg.fn(...allArgs)
-                delete thisArg.fn
-            }
-        }
+<script>
+  Function.prototype.myBind = function (context, ...args1) {
+    context = context ? Object(context) : window
+
+    return (...args2) => {
+      let args = args1.length ? args1 : args2
+      context.fn = this
+      let res = context.fn(...args)
+      delete context.fn
+      return res
+    }
+  }
+
+  function testFn(data1, data2) {
+    console.log('this：', this)
+    console.log('args：', data1, data2)
+  }
+  let obj = { a: 1, b: 2 }
+  let aFn = testFn.bind(obj, 11, 22)
+  let bFn = testFn.myBind(obj, 11, 22)
+  aFn()
+  //  aFn(111,222)
+  bFn()
+  //  bFn(111, 222)
+</script>
 ```
 
